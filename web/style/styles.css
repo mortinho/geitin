@@ -1,0 +1,96 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Apr 4, 2014, 2:32:47 PM
+    Author     : root
+*/
+#container{
+    width:90%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10px;
+    background-color: lightgray;
+}
+
+#title{
+    height: 50px;
+    margin:10px;
+    top: 20px;
+    background-color: lightblue;
+    text-align: center;
+}
+
+#info{
+    height : 100px;
+    margin:10px;
+    background-color: lightgreen;
+    text-align: center;
+}
+
+#select{
+    height: 40px;
+    text-align: center;
+    background-color: lightpink;
+}
+
+#mainframe{
+    margin:10px;
+    background-color: beige;
+}
+
+#qce{
+    width:100%;
+    text-align: center;
+}
+
+#qce td{
+    margin: 10px;
+    border:1px solid green;
+    width: auto;
+}
+
+.login{
+    display:table;
+    vertical-align: middle;
+    position: absolute;
+    left:50%;
+    top: 50%;
+    margin: auto;
+    height: 250px;
+    margin-top: -125px;
+    width:500px;
+    margin-left: -250px;
+    text-align: center;
+    background-color: gray;
+}
+
+#cell{
+	display:table-cell;
+	vertical-align: middle;
+	text-align: right;
+}
+
+#loginTable{
+	margin-left:auto;
+	margin-right:auto;
+}
+
+#loginTable input {
+	width: 150px;
+}
+
+.responsavel{
+    width:  20%;
+    background-color: lightgreen;
+}
+
+.thinRow{
+  height: 25px;
+}
+
+.fatRow{
+    height: 100px;
+}
