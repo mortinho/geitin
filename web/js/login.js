@@ -9,6 +9,16 @@ function loginPop(){
             >login</button></td></tr></table></form></div>";
     login.addClass("login");
     $(form).appendTo(login);
+    $("#user").keyup(function(event){
+        if(event.keyCode === 13){
+            $("#login button").click();
+        }
+    });
+    $("#passwd").keyup(function(event){
+        if(event.keyCode === 13){
+            $("#login button").click();
+        }
+    });
 }
 
 //  recupera os dados do form
@@ -18,6 +28,7 @@ function loginPop(){
 
 function Login() {
     user.name = $("#user").val();
+    createCookie("name",user.name);
     user.password = $("#passwd").val();
     user.ticket = null;
     $(".login button").attr("disabled","true");
@@ -42,6 +53,7 @@ function ajaxLogin() {
             //callBack(responseData);
             console.log(data.data.ticket);
             user.ticket= data.data.ticket;
+            createCookie("ticket",user.ticket);
             loadPage();
 //            alert(user.ticket);
 //            $(xml).find('ticket').each(function(){
@@ -63,7 +75,7 @@ function ajaxLogin() {
 
 function verifyTicket(ticket){
     ticketexists = typeof(ticket);
-    if( ticketexists !== "undefinied" && ticketexists !== null){
+    if( ticketexists === "string"){
         console.log("ticket existe");
         $.ajax({
                 type:'GET',
@@ -76,7 +88,10 @@ function verifyTicket(ticket){
                     404: function (response) {
                         console.log('ticket invalido');
                         tempTicket=null;
-                        alert('1');
+                    },
+                    401: function (response) {
+                        console.log('ticket inexistente, wtf');
+                        tempTicket=null;
                     }
                 }});
         return tempTicket;

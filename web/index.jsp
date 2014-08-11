@@ -14,16 +14,20 @@
         <script src="js/qce.js"></script>
         <script src="js/login.js"></script>
         <script src="js/loader.js"></script>
+        <script src="js/cookies.js"></script>
         <link rel="stylesheet" type="text/css" href="style/styles.css"/>
         <script>
             $("document").ready(function (){
-//              verificar e validar ticket 
+//                user.ticket = ???;  //look and load cookie
+                console.log('ticket: '+user.ticket);
+                user.ticket = readCookie("ticket");
+                user.name = readCookie("name");
+                if(user.ticket){
 //              se nao ticket pedir login
-                //user = {};  //look and load cookie
-                if(!verifyTicket(user.ticket)){
-                    loginPop();
-                } else {
                     loadPage();
+                } else {
+                    loginPop();
+                    $("#user").val(user.name);
                 }
             });
            </script>
@@ -32,8 +36,8 @@
     <body>
         <div id="container">
             <div id="title"><p></p></div>
-            <div id="info"><p>project info</p></div>
-            <div id="select"><p>menu</p></div>
+            <div id="info"><p></p></div>
+            <div id="select"><p></p></div>
             <div id="mainframe"></div>
         </div>
     </body>

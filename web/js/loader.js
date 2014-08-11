@@ -4,8 +4,24 @@
  * and open the template in the editor.
  */
 
+// parser de parametros de url, null se nao existir
+
+
+function getUrlParameter(sParam) {
+    var sPageURL = window.location.search.substring(1);
+    var sURLVariables = sPageURL.split('&');
+    for (var i = 0; i < sURLVariables.length; i++){
+        var sParameterName = sURLVariables[i].split('=');
+        if (sParameterName[0]===sParam) {
+            return sParameterName[1];
+        }
+    }
+    return null;
+}
+
+
 //passagem do usuario usado no login talvez seja mais interessante
-function loadUser (user) {
+function loadUser(user) {
     $.ajax(
        {type:'GET',
         url:'../alfresco/service/api/people/'+user.name+'?alf_ticket='+user.ticket,
@@ -37,4 +53,5 @@ function loadUser (user) {
 function loadPage(){
     $("#login").remove();
     $("#container").show();
+    $("#mainframe").text("loaded "+user.name);
 }
