@@ -26,19 +26,19 @@ and open the template in the editor.
 #info{
     height : 100px;
     margin:10px;
-    background-color: lightgreen;
+    background-color: lightblue;
     text-align: center;
 }
 
 #select{
     height: 40px;
     text-align: center;
-    background-color: lightpink;
+    background-color: lightblue;
 }
 
 #mainframe{
     margin:10px;
-    background-color: beige;
+    background-color: lightblue;
 }
 
 #qce{
