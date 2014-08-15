@@ -36,9 +36,16 @@ and open the template in the editor.
     background-color: darkcyan;
 }
 
+#footer{
+    height: 120px;
+    text-align: center;
+    background-color: darkcyan;
+}
+
 #mainframe{
     margin:10px;
     background-color: lightgray;
+    min-height: 300px;
 }
 
 #qce{
@@ -93,4 +100,16 @@ and open the template in the editor.
 
 .fatRow{
     height: 100px;
+}
+
+.popup{
+    position: fixed;
+    z-index: 100;
+    background-color: lightblue;
+    width: 70%;
+    top: 100px;
+    left: 15%;
+    min-height: 300px;
+    max-height: 70%;
+    overflow-y: auto;
 }

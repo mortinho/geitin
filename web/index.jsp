@@ -39,6 +39,7 @@
             <div id="info"><p></p></div>
             <div id="select"><p></p></div>
             <div id="mainframe"></div>
+            <div id="footer"></div>
         </div>
     </body>
 </html>
