@@ -58,34 +58,42 @@ function loadPage(){
 
 
 function createProjectPop(){
-    getProjects();
-    var pop = $("<div id='projectpop'></div>").appendTo($("body"));
-    pop.addClass("popup");
-    $("<select id='selectproject'></select>").appendTo(pop);
-}
-
-
-function getProjects(){
-    $.ajax(
-       {type:'GET',
-        url:'../alfresco/service/api/sites?alf_ticket='+user.ticket,
-        dataType: 'json',
-        contentType: 'application/json; charset=utf-8',
-        cache:false,
-//        data:JSON.stringify({"username":user.name,"password":user.password}),
-        
-        success: function(data){
-            //callBack(responseData);
-            console.log(data);
-            window.projects = data;
+    verifyTicket(function (){
+        function loadSelect(){
             for (i in projects){
                 var shortname = projects[i].shortName;
                 $("<option value="+shortname+">"+shortname+"</option>").appendTo($("#selectproject"));
             }
-            
+        }
+        var pop = $("<div id='projectpop'></div>").appendTo($("body"));
+        pop.addClass("popup");
+        $("<select id='selectproject'></select>").appendTo(pop);
+        if (typeof(projects) !== "undefined" && projects) 
+        {
+            loadSelect();
+        } else {
+            getProjects(loadSelect);
+        }
+    });
+}
+
+
+function getProjects(callback){
+    $.ajax(
+    {
+        type:'GET',
+        url:'../alfresco/service/api/sites?alf_ticket='+user.ticket,
+        dataType: 'json',
+        contentType: 'application/json; charset=utf-8',
+        cache:false,
+        success: function(data){
+            console.log(data);
+            window.projects = data;
+            callback();
         },
         error: function (xhr, ajaxOptions, thrownError){ 
             console.log(xhr+" "+thrownError);
-        }}
+        }
+    }
     );
 }
