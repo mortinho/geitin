@@ -70,6 +70,7 @@ function ajaxLogin() {
             console.log(xhr+" "+thrownError);
             $(".login button").removeAttr("disabled");
             $(".login button").before($("<i id='errormsg'>usuario ou senha invalidos</i>"));
+            $("#passwd").val("");
             //$('#div_tabela_com_header').removeClass('loading');
         }
        }
