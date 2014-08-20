@@ -37,7 +37,10 @@
         <div id="container">
             <div id="title"><p></p></div>
             <div id="info"><p></p></div>
-            <div id="select"><p></p></div>
+            <div id="select"><p></p>
+                    <button onclick="Javascript:logout();">logout</button>
+                    <button onclick="Javascript:createProjectPop();">Create Project</button>
+            </div>
             <div id="mainframe"></div>
             <div id="footer"></div>
         </div>
