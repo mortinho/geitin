@@ -67,7 +67,15 @@ function createProjectPop(){
         }
         var pop = $("<div id='projectpop'></div>").appendTo($("body"));
         pop.addClass("popup");
-        $("<select id='selectproject'></select>").appendTo(pop);
+        var body = "<div id='shaper'>\n\
+                        <select id='selectproject'></select>\n\
+                        <div class='bottombutton'>\n\
+                            <button id='close'>close</button>\n\
+                        </div>\n\
+                    </div>\n\
+        ";
+        $(body).appendTo(pop);
+        $("#close").on("click",function(){$("#projectpop").remove();});
         if (typeof(projects) !== "undefined" && projects) 
         {
             loadSelect();
