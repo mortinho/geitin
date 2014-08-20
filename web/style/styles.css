@@ -109,7 +109,7 @@ and open the template in the editor.
     width: 70%;
     top: 100px;
     left: 15%;
-    min-height: 300px;
+    height: 300px;
     max-height: 70%;
     overflow-y: auto;
 }
