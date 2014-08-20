@@ -20,8 +20,7 @@ function getUrlParameter(sParam) {
 }
 
 
-//passagem do usuario usado no login talvez seja mais interessante
-function loadUser(user) {
+function loadUser(callback) {
     $.ajax(
        {type:'GET',
         url:'../alfresco/service/api/people/'+user.name+'?alf_ticket='+user.ticket,
@@ -30,21 +29,13 @@ function loadUser(user) {
         cache:false,
         
         success: function(data){
-            //callBack(responseData);
-            console.log(data.firstName);
-            for(v in data){
-                
-                console.log(v,": ",data[v]);
-            }
-            info = data;
+            callback(data);
         },
         error: function (xhr, ajaxOptions, thrownError){ 
             console.log(xhr+" "+thrownError);
-            info = null;
         }
        }
    );
-   return info;
 }
 
 
@@ -85,7 +76,7 @@ function createProjectPop(){
     });
 }
 
-
+// 
 function getProjects(callback){
     $.ajax(
     {
