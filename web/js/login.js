@@ -36,6 +36,11 @@ function Login() {
     ajaxLogin(user);
 }
 
+function logout() {
+    user.ticket=null;
+    eraseCookie("ticket");
+}
+
 //  pedido POST de login via ajax,
 //  parametros: user { name , password }
 //  retorno: user { name , password , ticket }
@@ -73,41 +78,32 @@ function ajaxLogin() {
 
 // verificador de existencia de ticket
 
-function verifyTicket(ticket){
-    ticketexists = typeof(ticket);
+function verifyTicket(callback){
+    ticketexists = typeof(user.ticket);
     if( ticketexists === "string"){
         console.log("ticket existe");
         $.ajax({
                 type:'GET',
-                url:'../alfresco/service/api/login/ticket/'+ticket,
+                url:'../alfresco/service/api/login/ticket/'+user.ticket+'?alf_ticket='+user.ticket,
                 statusCode: {
                     200: function (response) { //ticket ainda valido
-                        tempTicket=ticket;
+                        callback();
                         console.log('ticket valido');
                     },
                     404: function (response) {
                         console.log('ticket invalido');
-                        tempTicket=null;
+                        user.ticket=null;
+                        loginPop();
                     },
                     401: function (response) {
                         console.log('ticket inexistente, wtf');
-                        tempTicket=null;
+                        user.ticket=null;
+                        loginPop();
                     }
                 }});
-        return tempTicket;
         //validate GET >> senao valido ask login
-        //return true
     } else {
         console.log("ticket nao existe");
-        //ask login >> return false
-        return null;
+        loginPop();
     }
-//    $(".login").hide();
-//    $("#container").show;
-//    user = loadUser("joao");
-//    
-    //preencher pagina principal 
-    
-    //loaduser
-    //todo
 }
