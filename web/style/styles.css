@@ -16,30 +16,46 @@ and open the template in the editor.
 }
 
 #title{
-    height: 50px;
-    margin:10px;
-    top: 20px;
-    background-color: darkcyan;
+    height: 150px;
+    background-color: #003366;
     text-align: center;
 }
 
-#info{
-    height : 100px;
-    margin:10px;
-    background-color: lightcyan;
-    text-align: center;
+#title h1{
+    padding: 50px;
+    color: white;
 }
 
+#select{
+    width:95%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: -36px;
+    height: 40px;
+    background-color: #6699ff;
+    text-align: center;
+    border-radius: 20px;
+}
+
+#select button{
+    font-weight:bold;
+    height:40px;
+    border: 0px;
+    background-color:#6699ff;
+    color: white;
+    
+}
+/*
 #select{
     height: 40px;
     text-align: center;
     background-color: darkcyan;
-}
+}*/
 
 #footer{
     height: 120px;
     text-align: center;
-    background-color: darkcyan;
+    background-color: #003366;
 }
 
 #mainframe{
@@ -71,13 +87,14 @@ and open the template in the editor.
     width:500px;
     margin-left: -250px;
     text-align: center;
-    background-color: gray;
+    background-color: white;
+    border:solid #3366ff;
+    box-shadow: 10px 10px #003366;
 }
 
 #cell{
 	display:table-cell;
 	vertical-align: middle;
-	text-align: right;
 }
 
 #loginTable{

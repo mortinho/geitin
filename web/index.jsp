@@ -35,11 +35,13 @@
     </head>
     <body>
         <div id="container">
-            <div id="title"><p></p></div>
-            <div id="info"><p></p></div>
+            <div id="title"><p><h1></h1></p></div>
             <div id="select"><p></p>
-                    <button onclick="Javascript:logout();">logout</button>
-                    <button onclick="Javascript:createProjectPop();">Create Project</button>
+                <button>
+<!--                        onclick="Javascript:createProjectPop();"-->
+                        Projetos</button>
+                    <button onclick="Javascript:logout();">Supervisão</button>
+                    <button onclick="Javascript:logout();loginPop();">Sair</button>
             </div>
             <div id="mainframe"></div>
             <div id="footer"></div>

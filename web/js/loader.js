@@ -44,7 +44,10 @@ function loadUser(callback) {
 function loadPage(){
     $("#login").remove();
     $("#container").show();
-    $("#mainframe").text("loaded "+user.name);
+    loadUser(function(data){
+        user.data=data;
+        $("#title h1").text("Ola, "+user.data.firstName+" "+user.data.lastName);
+    });
 }
 
 

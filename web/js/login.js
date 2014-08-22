@@ -6,22 +6,23 @@ function loginPop(){
     login = $("<div id='login' class='login'></div>").appendTo($("body"));
     form = "<div id='cell'>\n\
                 <form>\n\
+                <img src='images/LIOc-Logo.png' id='im' height='90'>\n\
                     <table id='loginTable'>\n\
                         <tr>\n\
-                            <td>user:</td>\n\
+                            <td>Usuario:</td>\n\
                             <td>\n\
                                 <input id='user'>\n\
                             </td>\n\
                         </tr>\n\
                         <tr>\n\
-                            <td>password:</td>\n\
+                            <td>Senha:</td>\n\
                             <td>\n\
                                 <input id='passwd' type='password'>\n\
                             </td>\n\
                         </tr>\n\
                         <tr>\n\
                             <td colspan='2'>\n\
-                                <button type='button'onclick='Javascript:Login()'>login</button>\n\
+                                <button type='button'onclick='Javascript:Login()'>Entrar</button>\n\
                             </td>\n\
                         </tr>\n\
                     </table>\n\
