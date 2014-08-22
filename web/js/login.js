@@ -1,12 +1,32 @@
 //  desenho do layer de login
-user = {};
+
+user = {}; //pog
 function loginPop(){
     $("#container").hide();
-//    style = "position: absolute; left:50%; top: 50%; margin: auto; height: 250px; margin-top: -125px; width:500px; margin-left: -250px; text-align: center; background-color: red;";
     login = $("<div id='login' class='login'></div>").appendTo($("body"));
-    form = "<div id='cell'><form><table id='loginTable'><tr><td>user:</td><td><input id='user'></td></tr><tr><td>password:</td><td><input id='passwd' type='password'></td></tr><tr><td colspan='2'><button type='button' \n\
-            onclick='Javascript:Login()'\n\
-            >login</button></td></tr></table></form></div>";
+    form = "<div id='cell'>\n\
+                <form>\n\
+                    <table id='loginTable'>\n\
+                        <tr>\n\
+                            <td>user:</td>\n\
+                            <td>\n\
+                                <input id='user'>\n\
+                            </td>\n\
+                        </tr>\n\
+                        <tr>\n\
+                            <td>password:</td>\n\
+                            <td>\n\
+                                <input id='passwd' type='password'>\n\
+                            </td>\n\
+                        </tr>\n\
+                        <tr>\n\
+                            <td colspan='2'>\n\
+                                <button type='button'onclick='Javascript:Login()'>login</button>\n\
+                            </td>\n\
+                        </tr>\n\
+                    </table>\n\
+                </form>\n\
+            </div>";
     login.addClass("login");
     $(form).appendTo(login);
     $("#user").keyup(function(event){
@@ -36,14 +56,15 @@ function Login() {
     ajaxLogin(user);
 }
 
+//  logout no restful
+//  apaga cookie e variavel
+
 function logout() {
     user.ticket=null;
     eraseCookie("ticket");
 }
 
-//  pedido POST de login via ajax,
-//  parametros: user { name , password }
-//  retorno: user { name , password , ticket }
+//  pedido POST de login via ajax
 
 function ajaxLogin() {
     $.ajax(
@@ -60,10 +81,6 @@ function ajaxLogin() {
             user.ticket= data.data.ticket;
             createCookie("ticket",user.ticket);
             loadPage();
-//            alert(user.ticket);
-//            $(xml).find('ticket').each(function(){
-//                console.log($(this).text());
-//            })
         },
         error: function (xhr, ajaxOptions, thrownError){ 
             //alert('deu ruim '+xhr.responseText());
@@ -71,13 +88,13 @@ function ajaxLogin() {
             $(".login button").removeAttr("disabled");
             $(".login button").before($("<i id='errormsg'>usuario ou senha invalidos</i>"));
             $("#passwd").val("");
-            //$('#div_tabela_com_header').removeClass('loading');
         }
        }
    );
 }
 
 // verificador de existencia de ticket
+// chamar sempre que houver calls do alfresco
 
 function verifyTicket(callback){
     ticketexists = typeof(user.ticket);
