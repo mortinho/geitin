@@ -37,6 +37,39 @@ and open the template in the editor.
     border-radius: 20px;
 }
 
+#select ul{    
+    padding-left: 0px;
+    list-style: none;
+}
+
+.dropdown{
+    position: relative;
+    left:20px;
+    right:40px;
+}
+
+.dropdown li {
+    float:left;
+    zoom: 1;
+}
+
+.dropdown li:hover, .dropdown li.hover {
+    position: relative; 
+}
+
+.dropdown ul {
+    visibility: hidden;
+    position: absolute;
+    width: 200px;
+    top: 100%;
+    left: 0; 
+}
+
+.dropdown ul li {
+    text-align: left;
+    float: none; 
+}
+		
 #select button{
     font-weight:bold;
     height:40px;
@@ -45,12 +78,18 @@ and open the template in the editor.
     color: white;
     
 }
-/*
-#select{
-    height: 40px;
-    text-align: center;
-    background-color: darkcyan;
-}*/
+
+
+#select .subdrop button{
+    width: 100%;
+    position:relative;
+    background-color:#66aaff;
+}
+
+#select button:hover{
+    background-color:#000000;
+}
+
 
 #footer{
     height: 120px;

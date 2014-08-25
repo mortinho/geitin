@@ -18,6 +18,16 @@
         <link rel="stylesheet" type="text/css" href="style/styles.css"/>
         <script>
             $("document").ready(function (){
+                $("ul.dropdown li").hover(function(){
+                        $(this).addClass("hover");
+                        ulChild = $('ul:first',this).hide();
+                        ulChild.css('visibility', 'visible');
+                        ulChild.slideDown(200);
+                    }, function(){
+                        $(this).removeClass("hover");
+                        $('ul:first',this).css('visibility', 'hidden');
+                });
+                
 //                user.ticket = ???;  //look and load cookie
                 console.log('ticket: '+user.ticket);
                 user.ticket = readCookie("ticket");
@@ -37,19 +47,36 @@
         <div id="container">
             <div id="title"><p><h1></h1></p></div>
             <div id="select"><p></p>
-                <ul>
+                <ul class='dropdown'>
                     <li>
                         <button>
-        <!--                        onclick="Javascript:createProjectPop();"-->
+<!--                                onclick="Javascript:createProjectPop();"-->
                                 Projetos</button>
-                        <ul>
+                        <ul class='subdrop'>
                             <li>
-                                <button onclick=''>BMOP</button>
+                                <button onclick='Javascript:createProjectPop();'>Criar Projeto</button>
+                            </li>
+                            <li>
+                                <button>BMOP</button>
+                            </li>
+                            <li>
+                                <button>Mais...</button>
                             </li>
                         </ul>
                     </li>
                     <li>
                         <button onclick="Javascript:logout();">Supervisão</button>
+                        <ul class='subdrop'>
+                            <li>
+                                <button>Supervisão automática</button>
+                            </li>
+                            <li>
+                                <button>BMOP</button>
+                            </li>
+                            <li>
+                                <button>Mais...</button>
+                            </li>
+                        </ul>
                     </li>
                     <li>
                         <button onclick="Javascript:logout();loginPop();">Sair</button>
