@@ -37,11 +37,24 @@
         <div id="container">
             <div id="title"><p><h1></h1></p></div>
             <div id="select"><p></p>
-                <button>
-<!--                        onclick="Javascript:createProjectPop();"-->
-                        Projetos</button>
-                    <button onclick="Javascript:logout();">Supervisão</button>
-                    <button onclick="Javascript:logout();loginPop();">Sair</button>
+                <ul>
+                    <li>
+                        <button>
+        <!--                        onclick="Javascript:createProjectPop();"-->
+                                Projetos</button>
+                        <ul>
+                            <li>
+                                <button onclick=''>BMOP</button>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <button onclick="Javascript:logout();">Supervisão</button>
+                    </li>
+                    <li>
+                        <button onclick="Javascript:logout();loginPop();">Sair</button>
+                    </li>
+                </ul>
             </div>
             <div id="mainframe"></div>
             <div id="footer"></div>
