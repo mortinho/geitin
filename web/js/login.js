@@ -11,7 +11,7 @@ function loginPop(){
                         <tr>\n\
                             <td>Usuario:</td>\n\
                             <td>\n\
-                                <input id='user'>\n\
+                                <input id='user' type='text' name='username'/>\n\
                             </td>\n\
                         </tr>\n\
                         <tr>\n\

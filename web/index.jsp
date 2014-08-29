@@ -34,7 +34,7 @@
                 user.name = readCookie("name");
                 if(user.ticket){
 //              se nao ticket pedir login
-                    loadPage();
+                    loadPage(getUrlParameter("projeto"));
                 } else {
                     loginPop();
                     $("#user").val(user.name);
@@ -47,6 +47,10 @@
         <div id="container">
             <div id="title"><p><h1></h1></p></div>
             <div id="select"><p></p>
+                <!--Dynamify this-->
+                
+                
+                
                 <ul class='dropdown'>
                     <li>
                         <button>
@@ -68,7 +72,7 @@
                         <button onclick="Javascript:logout();">Supervisão</button>
                         <ul class='subdrop'>
                             <li>
-                                <button>Supervisão automática</button>
+                                <button>Automática</button>
                             </li>
                             <li>
                                 <button>BMOP</button>
@@ -82,6 +86,9 @@
                         <button onclick="Javascript:logout();loginPop();">Sair</button>
                     </li>
                 </ul>
+                
+                
+                <!--end dynamify-->
             </div>
             <div id="mainframe"></div>
             <div id="footer"></div>

@@ -41,15 +41,36 @@ function loadUser(callback) {
 
 
 
-function loadPage(){
+function loadPage(projeto){
     $("#login").remove();
     $("#container").show();
-    loadUser(function(data){
-        user.data=data;
-        $("#title h1").text("Ola, "+user.data.firstName+" "+user.data.lastName);
-    });
+    currentProject = null;   
+    if (projeto){
+        getProjects(function(){
+            currentProject=null;
+            for (i in projects){
+                if (projects[i].shortName === projeto){
+                    currentProject = projects[i];
+                }
+            }
+            if (currentProject){
+            //load project page >> make another function for this dummy
+                $("#title h1").text(currentProject.title);
+            } else {
+                loadPage();
+            }
+            
+        });
+    } else {
+        //load user dashboard
+        
+        loadUser(function(data){
+            user.data=data;
+            $("#title h1").text("Olá, "+user.data.firstName+" "+user.data.lastName);
+        });
+        
+    }
 }
-
 
 function createProjectPop(){
     verifyTicket(function (){
