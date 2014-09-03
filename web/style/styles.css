@@ -69,6 +69,16 @@ and open the template in the editor.
     text-align: left;
     float: none; 
 }
+
+ul.dropdown ul ul
+{
+    left: 100%; top: 0; 
+}
+
+ul.dropdown li:hover > ul
+{
+    visibility: visible; 
+}
 		
 #select button{
     font-weight:bold;

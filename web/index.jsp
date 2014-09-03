@@ -15,10 +15,11 @@
         <script src="js/login.js"></script>
         <script src="js/loader.js"></script>
         <script src="js/cookies.js"></script>
+        <script src="js/jquery.hoverIntent.minified.js"></script>
         <link rel="stylesheet" type="text/css" href="style/styles.css"/>
         <script>
             $("document").ready(function (){
-                $("ul.dropdown li").hover(function(){
+                $("ul.dropdown li").hoverIntent(function(){
                         $(this).addClass("hover");
                         ulChild = $('ul:first',this).hide();
                         ulChild.css('visibility', 'visible');
@@ -51,10 +52,10 @@
                 
                 
                 
-                <ul class='dropdown'>
+<!--                <ul class='dropdown' id="mainmenu">
                     <li>
                         <button>
-<!--                                onclick="Javascript:createProjectPop();"-->
+                                onclick="Javascript:createProjectPop();"
                                 Projetos</button>
                         <ul class='subdrop'>
                             <li>
@@ -85,7 +86,7 @@
                     <li>
                         <button onclick="Javascript:logout();loginPop();">Sair</button>
                     </li>
-                </ul>
+                </ul>-->
                 
                 
                 <!--end dynamify-->
