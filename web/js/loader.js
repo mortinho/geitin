@@ -6,7 +6,24 @@
 
 // parser de parametros de url, null se nao existir
 
-function getProjectMenu() {
+function getDashboardMenu(projectList) {
+    dashboardMenu = {
+        "Projetos": {
+            "Criar": "",
+            "Favorito": "",
+            "Mais...": projectList
+        },
+        "Supervisão": {
+            "Automática": "?",
+            "Favorito": "",
+            "Mais...": projectList
+        },
+        "Sair": "javascript:logout();loginPop();"
+    };
+    return dashboardMenu;
+}
+
+function getProjectMenu(projectList) {
     projectMenu = {
         "Ciclos": {
             "Mostrar": "",
@@ -20,11 +37,7 @@ function getProjectMenu() {
         "Supervisão": {
             "Automática": "",
             "Favorito": "",
-            "Mais...": {
-                "lista": "",
-                "de": "",
-                "projetos": ""
-            }
+            "Mais...": projectList
         },
         "Relatórios": {
             "QCE": "",
@@ -37,41 +50,13 @@ function getProjectMenu() {
         "Projetos": {
             "Criar": "",
             "Favorito": "",
-            "Mais...": {
-                "lista": "",
-                "de": "",
-                "projetos": ""
-            }
+            "Mais...": projectList
         },
         "Sair": "javascript:logout();loginPop();"
     };
     return projectMenu;
 }
 
-function getDashboardMenu() {
-    dashmenu = {
-        "Projetos": {
-            "Criar": "",
-            "Favorito": "",
-            "Mais...": {
-                "lista": "",
-                "de": "",
-                "projetos": ""
-            }
-        },
-        "Supervisão": {
-            "Automática": "",
-            "Favorito": "",
-            "Mais...": {
-                "lista": "",
-                "de": "",
-                "projetos": ""
-            }
-        },
-        "Sair": "javascript:logout();loginPop();"
-    }
-    return dashmenu;
-}
 
 function getUrlParameter(sParam) {
     var sPageURL = window.location.search.substring(1);
@@ -113,14 +98,18 @@ function loadPage(projeto) {
     if (projeto) {
         getProjects(function() {
             currentProject = null;
+            projectList = {};
             for (i in projects) {
                 if (projects[i].shortName === projeto) {
                     currentProject = projects[i];
+                } else {
+                    tempName = projects[i].shortName;
+                    projectList[tempName] = "?projeto="+tempName;
                 }
             }
             if (currentProject) {
                 //load project page >> make another function for this dummy
-                addMenu(getProjectMenu());
+                addMenu(getProjectMenu(projectList));
                 $("#title h1").text(currentProject.title);
             } else {
                 loadPage();
@@ -133,6 +122,14 @@ function loadPage(projeto) {
         loadUser(function(data) {
             user.data = data;
             addMenu(getDashboardMenu());
+            getProjects(function (){
+                projectList = {};
+                for (i in projects){
+                    tempName = projects[i].shortName;
+                    projectList[tempName] = "?projeto="+tempName;
+                }
+                addMenu(getDashboardMenu(projectList));
+            });
             $("#title h1").text("Olá, " + user.data.firstName + " " + user.data.lastName);
         });
 
@@ -200,6 +197,8 @@ function addMenu(custom, parent) {
             } else if (typeof (custom[i]) === "object") {
                 addButtons(i, li);
                 addMenu(custom[i], li);
+            } else if ((typeof (custom[i]) === "string") && (custom[i])) {
+                addButtons(i, li, goUrl, custom[i]);
             } else {
                 addButtons(i, li);
             }
@@ -232,9 +231,16 @@ function addMenu(custom, parent) {
     }
 }
 
-function addButtons(text, parent, onclick) {
+function addButtons(text, parent, onclick,url) {
     bt = $("<button>" + text + "</button>").appendTo(parent);
     if (onclick) {
-        bt.on("click", onclick());
+        bt.on("click", onclick);
     }
+    if (url) {
+        bt.attr("url",url);
+    }
+}
+
+function goUrl(){
+    window.location = $(this).attr("url");
 }
