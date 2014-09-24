@@ -222,6 +222,7 @@ function addMenu(custom, parent) {
         $("ul.dropdown li").hoverIntent(function() {
             $(this).addClass("hover");
             ulChild = $('ul:first', this).hide();
+            ulChild.hide();
             ulChild.css('visibility', 'visible');
             ulChild.slideDown(200);
         }, function() {

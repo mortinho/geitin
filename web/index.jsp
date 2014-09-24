@@ -24,10 +24,11 @@
                 $("ul.dropdown li").hoverIntent(function(){
                         $(this).addClass("hover");
                         ulChild = $('ul:first',this).hide();
+                        ulChild.hide();
                         ulChild.css('visibility', 'visible');
                         ulChild.slideDown(200);
                     }, function(){
-                        $(this).removeClass("hover");
+                        $(this).removeClass("hover"); 
                         $('ul:first',this).css('visibility', 'hidden');
                 });
                 
