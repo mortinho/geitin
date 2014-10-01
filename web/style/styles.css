@@ -75,10 +75,10 @@ ul.dropdown ul ul
     left: 100%; top: 0; 
 }
 
-ul.dropdown li:hover > ul
+/*ul.dropdown li:hover > ul
 {
     visibility: visible; 
-}
+}*/
 		
 #select button{
     font-weight:bold;

@@ -57,6 +57,19 @@ function getProjectMenu(projectList) {
     return projectMenu;
 }
 
+function updateHover(Jobj) {
+    Jobj.hoverIntent(function() {
+        $(this).addClass("hover");
+        ulChild = $('ul:first', this).hide();
+        ulChild.hide();
+        ulChild.css('visibility', 'visible');
+        ulChild.slideDown(300);
+    }, function() {
+        $(this).removeClass("hover");
+        $('ul:first', this).css('visibility', 'hidden');
+    });
+}
+
 
 function getUrlParameter(sParam) {
     var sPageURL = window.location.search.substring(1);
@@ -219,16 +232,7 @@ function addMenu(custom, parent) {
         drop.appendTo(select);
 
         //update hover
-        $("ul.dropdown li").hoverIntent(function() {
-            $(this).addClass("hover");
-            ulChild = $('ul:first', this).hide();
-            ulChild.hide();
-            ulChild.css('visibility', 'visible');
-            ulChild.slideDown(200);
-        }, function() {
-            $(this).removeClass("hover");
-            $('ul:first', this).css('visibility', 'hidden');
-        });
+        updateHover($("ul.dropdown li"));
     }
 }
 
