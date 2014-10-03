@@ -101,9 +101,37 @@ function loadUser(callback) {
     );
 }
 
+// fetch sites the user is a part of
+//ticket validate?
+function getUserSites(callback) {
+    $.ajax(
+            {type: 'GET',
+                url: '../alfresco/service/api/people/' + user.name + '/sites?alf_ticket=' + user.ticket,
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                cache: false,
+                success: function(data) {
+                    callback(data);
+                },
+                error: function(xhr, ajaxOptions, thrownError) {
+                    console.log(xhr + " " + thrownError);
+                }
+            }
+    );
+}
 
-
-
+function getManageableSites(callback){
+    getUserSites(function(data){
+        user.sites = data;
+        for (i in user.sites) {
+            for (m in user.sites[i].siteManagers){
+                if (user.name === user.sites[i].siteManagers[m])
+                    user.sites[i].isManager = true;
+            }
+        }
+        callback();
+    });
+}
 function loadPage(projeto) {
     $("#login").remove();
     $("#container").show();
@@ -122,8 +150,23 @@ function loadPage(projeto) {
             }
             if (currentProject) {
                 //load project page >> make another function for this dummy
-                addMenu(getProjectMenu(projectList));
-                $("#title h1").text(currentProject.title);
+                
+                getManageableSites(function(data){
+                    for (i in user.sites)
+                        
+                        
+                        
+                        
+                        //todo
+                });
+                getUserSites(function(data){
+                    myList ={};
+                    for (i in projectList){
+                        if (data.shortName === i) 
+                            myList[i] = projectList[i];
+                    }
+                addMenu(getProjectMenu(myList));
+                $("#title h1").text(currentProject.title);});
             } else {
                 loadPage();
             }
