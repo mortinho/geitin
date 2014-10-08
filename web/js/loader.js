@@ -127,11 +127,13 @@ function getUserSites(callback) {
 }
 
 function getManageableSites(callback) {
-    getUserSites(function(data) {
+    getUserSites(function() {
         for (i in user.sites) {
             for (m in user.sites[i].siteManagers) {
                 if (user.name === user.sites[i].siteManagers[m])
                     user.sites[i].isManager = true;
+                else 
+                    user.sites[i].isManager = false;
             }
         }
         callback();
@@ -158,23 +160,31 @@ function loadPage(projeto) {
                 }
             }
             if (currentProject) {
-                //load project page >> make another function for this dummy
-
-                getUserSites(function(data) {
+                getManageableSites(function(data) {
                     myList = {};
                     title = currentProject.title;
                     inSite = false;
                     for (i in projectList) {
-                        for (m in data) {
-                            if (data[m].shortName === projeto)
+//                        for (m in data) {
+//                            if (data[m].shortName === projeto)
+//                                inSite = true;
+//                            if (data[m].shortName === i)
+//                                myList[i] = projectList[i];
+//                        }
+                        $.each(user.sites,function (index, site){
+                            if (site.shortName === projeto)
                                 inSite = true;
-                            if (data[m].shortName === i)
+                            if (site.shortName === i)
                                 myList[i] = projectList[i];
-                        }
+                        });
                     }
+                    
+                    //access level visual test TBR
                     if (!inSite)
                         title = title + "<br>Guest";
-                    console.log(myList);
+                    if ($.inArray(user.name, currentProject.siteManagers)>=0)
+                        title = title + "<br>Admin";
+                    
                     addMenu(getProjectMenu(myList));
                     $("#title h1").html(title);
                 });
