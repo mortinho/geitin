@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-//merge test
+
 // parser de parametros de url, null se nao existir
 
 function getDashboardMenu(projectList) {
@@ -101,6 +101,43 @@ function loadUser(callback) {
     );
 }
 
+// fetch sites the user is a part of
+//ticket validate?
+function getUserSites(callback) {
+    if (typeof (user.sites !== "object")) {
+        $.ajax(
+                {type: 'GET',
+                    url: '../alfresco/service/api/people/' + user.name + '/sites?alf_ticket=' + user.ticket,
+                    dataType: 'json',
+                    contentType: 'application/json; charset=utf-8',
+                    cache: false,
+                    success: function(data) {
+                        user.sites = data;
+                        callback(data);
+                    },
+                    error: function(xhr, ajaxOptions, thrownError) {
+                        console.log(xhr + " " + thrownError);
+                    }
+                }
+        );
+    } else {
+        callback();
+    }
+
+}
+
+function getManageableSites(callback) {
+    getUserSites(function(data) {
+        for (i in user.sites) {
+            for (m in user.sites[i].siteManagers) {
+                if (user.name === user.sites[i].siteManagers[m])
+                    user.sites[i].isManager = true;
+            }
+        }
+        callback();
+    });
+}
+
 
 
 
@@ -117,13 +154,30 @@ function loadPage(projeto) {
                     currentProject = projects[i];
                 } else {
                     tempName = projects[i].shortName;
-                    projectList[tempName] = "?projeto="+tempName;
+                    projectList[tempName] = "?projeto=" + tempName;
                 }
             }
             if (currentProject) {
                 //load project page >> make another function for this dummy
-                addMenu(getProjectMenu(projectList));
-                $("#title h1").text(currentProject.title);
+
+                getUserSites(function(data) {
+                    myList = {};
+                    title = currentProject.title;
+                    inSite = false;
+                    for (i in projectList) {
+                        for (m in data) {
+                            if (data[m].shortName === projeto)
+                                inSite = true;
+                            if (data[m].shortName === i)
+                                myList[i] = projectList[i];
+                        }
+                    }
+                    if (!inSite)
+                        title = title + "<br>Guest";
+                    console.log(myList);
+                    addMenu(getProjectMenu(myList));
+                    $("#title h1").html(title);
+                });
             } else {
                 loadPage();
             }
@@ -131,15 +185,15 @@ function loadPage(projeto) {
         });
     } else {
         //load user dashboard
-        
+
         loadUser(function(data) {
             user.data = data;
             addMenu(getDashboardMenu());
-            getProjects(function (){
+            getUserSites(function() {
                 projectList = {};
-                for (i in projects){
-                    tempName = projects[i].shortName;
-                    projectList[tempName] = "?projeto="+tempName;
+                for (i in user.sites) {
+                    tempName = user.sites[i].shortName;
+                    projectList[tempName] = "?projeto=" + tempName;
                 }
                 addMenu(getDashboardMenu(projectList));
             });
@@ -179,7 +233,7 @@ function createProjectPop() {
     });
 }
 
-// 
+//now useless...? 
 function getProjects(callback) {
     $.ajax(
             {
@@ -199,6 +253,11 @@ function getProjects(callback) {
             }
     );
 }
+
+// create menu from object
+// string > link
+// object > dropdown
+// function > call
 
 function addMenu(custom, parent) {
     var drop = $("<ul></ul>");
@@ -236,16 +295,18 @@ function addMenu(custom, parent) {
     }
 }
 
-function addButtons(text, parent, onclick,url) {
+function addButtons(text, parent, onclick, url) {
     bt = $("<button>" + text + "</button>").appendTo(parent);
     if (onclick) {
         bt.on("click", onclick);
     }
     if (url) {
-        bt.attr("url",url);
+        bt.attr("url", url);
     }
 }
 
-function goUrl(){
+
+// change to push url + loadPage(prj)
+function goUrl() {
     window.location = $(this).attr("url");
 }
