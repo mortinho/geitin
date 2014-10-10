@@ -21,10 +21,10 @@
         <link rel="stylesheet" type="text/css" href="style/styles.css"/>
         <script>
             $("document").ready(function (){
-                updateHover($("ul.dropdown li"));
+//                updateHover($("ul.dropdown li")); //remove?
                 
 //                user.ticket = ???;  //look and load cookie
-                console.log('ticket: '+user.ticket);
+//                console.log('ticket: '+user.ticket); //remove
                 user.ticket = readCookie("ticket");
                 user.name = readCookie("name");
                 if(user.ticket){

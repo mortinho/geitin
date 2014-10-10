@@ -81,7 +81,7 @@ function ajaxLogin() {
             console.log(data.data.ticket);
             user.ticket= data.data.ticket;
             createCookie("ticket",user.ticket);
-            loadPage();
+            loadPage(getUrlParameter("projeto"));
         },
         error: function (xhr, ajaxOptions, thrownError){ 
             //alert('deu ruim '+xhr.responseText());

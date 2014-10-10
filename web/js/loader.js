@@ -25,8 +25,9 @@ function getDashboardMenu(projectList) {
 
 function getProjectMenu(projectList) {
     projectMenu = {
+        "Início": "?projeto=",
         "Ciclos": {
-            "Mostrar": "",
+            "QCE": "",
             "Editar": ""
         },
         "EAP": {
@@ -243,7 +244,7 @@ function createProjectPop() {
     });
 }
 
-//now useless...? 
+//now useless...?  >>> projects from DB
 function getProjects(callback) {
     $.ajax(
             {
@@ -317,6 +318,23 @@ function addButtons(text, parent, onclick, url) {
 
 
 // change to push url + loadPage(prj)
+
+
+
+
+//to do next
 function goUrl() {
     window.location = $(this).attr("url");
 }
+
+
+
+//inicio
+//
+//ciclo > qce
+//
+//botoes
+//
+//timeout ticket
+//
+//favorito ?
