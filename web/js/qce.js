@@ -5,10 +5,10 @@
  */
 
 
-function drawQCE(respList){
+function drawQCE(respList,jFrame){
     quantEntregas = 5;
     quantResponsaveis = 5;
-    mainFrame  = $("#mainframe");
+    frame  = jFrame;
     qce = $("<table id=qce></table>").appendTo(mainFrame);
     introRow = $("<tr id='introrow' class='thinRow'><td rowspan=2 class='responsavel' id='responsavel'>Responsaveis</td><td colspan='"+quantEntregas+"'>entregas</td>").appendTo(qce);
     entregasRow = $("<tr class='thinRow' id='entregasRow'></tr>").appendTo(qce);

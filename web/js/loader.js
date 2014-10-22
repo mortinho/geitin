@@ -1,10 +1,8 @@
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+//
+// html changing functions
+//
 
-// parser de parametros de url, null se nao existir
+
 
 function getDashboardMenu(projectList) {
     dashboardMenu = {
@@ -22,6 +20,8 @@ function getDashboardMenu(projectList) {
     };
     return dashboardMenu;
 }
+
+
 
 function getProjectMenu(projectList) {
     projectMenu = {
@@ -58,6 +58,9 @@ function getProjectMenu(projectList) {
     return projectMenu;
 }
 
+
+// updates menu entries' hover function
+
 function updateHover(Jobj) {
     Jobj.hoverIntent(function() {
         $(this).addClass("hover");
@@ -72,6 +75,8 @@ function updateHover(Jobj) {
 }
 
 
+// url parser, null for not found
+
 function getUrlParameter(sParam) {
     var sPageURL = window.location.search.substring(1);
     var sURLVariables = sPageURL.split('&');
@@ -85,70 +90,58 @@ function getUrlParameter(sParam) {
 }
 
 
-function loadUser(callback) {
-    $.ajax(
-            {type: 'GET',
-                url: '../alfresco/service/api/people/' + user.name + '?alf_ticket=' + user.ticket,
-                dataType: 'json',
-                contentType: 'application/json; charset=utf-8',
-                cache: false,
-                success: function(data) {
-                    callback(data);
-                },
-                error: function(xhr, ajaxOptions, thrownError) {
-                    console.log(xhr + " " + thrownError);
-                }
-            }
-    );
-}
+// hide main page and create a login box
 
-// fetch sites the user is a part of
-//ticket validate?
-function getUserSites(callback) {
-    if (typeof (user.sites !== "object")) {
-        $.ajax(
-                {type: 'GET',
-                    url: '../alfresco/service/api/people/' + user.name + '/sites?alf_ticket=' + user.ticket,
-                    dataType: 'json',
-                    contentType: 'application/json; charset=utf-8',
-                    cache: false,
-                    success: function(data) {
-                        user.sites = data;
-                        callback(data);
-                    },
-                    error: function(xhr, ajaxOptions, thrownError) {
-                        console.log(xhr + " " + thrownError);
-                    }
-                }
-        );
-    } else {
-        callback();
-    }
-
-}
-
-function getManageableSites(callback) {
-    getUserSites(function() {
-        for (i in user.sites) {
-            for (m in user.sites[i].siteManagers) {
-                if (user.name === user.sites[i].siteManagers[m])
-                    user.sites[i].isManager = true;
-                else 
-                    user.sites[i].isManager = false;
-            }
+function loginPop() {
+    $("#container").hide();
+    login = $("<div id='login' class='login'></div>").appendTo($("body"));
+    // move this html? 
+    form = "<div id='cell'>\n\
+                <form>\n\
+                <img src='images/LIOc-Logo.png' id='im' height='90'>\n\
+                    <table id='loginTable'>\n\
+                        <tr>\n\
+                            <td>Usuario:</td>\n\
+                            <td>\n\
+                                <input id='user' type='text' name='username'/>\n\
+                            </td>\n\
+                        </tr>\n\
+                        <tr>\n\
+                            <td>Senha:</td>\n\
+                            <td>\n\
+                                <input id='passwd' type='password'>\n\
+                            </td>\n\
+                        </tr>\n\
+                        <tr>\n\
+                            <td colspan='2'>\n\
+                                <button type='button'onclick='Javascript:Login()'>Entrar</button>\n\
+                            </td>\n\
+                        </tr>\n\
+                    </table>\n\
+                </form>\n\
+            </div>";
+    login.addClass("login");
+    $(form).appendTo(login);
+    $("#user").keyup(function(event) {
+        if (event.keyCode === 13) {
+            $("#login button").click();
         }
-        callback();
+    });
+    $("#passwd").keyup(function(event) {
+        if (event.keyCode === 13) {
+            $("#login button").click();
+        }
     });
 }
 
 
-
+// Main page draw
 
 function loadPage(projeto) {
     $("#login").remove();
     $("#container").show();
     currentProject = null;
-    if (projeto) {
+    if (projeto) {  // then load the project page if possible
         getProjects(function() {
             currentProject = null;
             projectList = {};
@@ -165,27 +158,21 @@ function loadPage(projeto) {
                     myList = {};
                     title = currentProject.title;
                     inSite = false;
-                    for (i in projectList) {
-//                        for (m in data) {
-//                            if (data[m].shortName === projeto)
-//                                inSite = true;
-//                            if (data[m].shortName === i)
-//                                myList[i] = projectList[i];
-//                        }
-                        $.each(user.sites,function (index, site){
+                    $.each(projectList, function(pname, project) {
+                        $.each(user.sites, function(index, site) {
                             if (site.shortName === projeto)
                                 inSite = true;
-                            if (site.shortName === i)
-                                myList[i] = projectList[i];
+                            if (site.shortName === pname)
+                                myList[pname] = project;
                         });
-                    }
-                    
-                    //access level visual test TBR
+                    });
+
+                    //access level visual test                                           TBR
                     if (!inSite)
                         title = title + "<br>Guest";
-                    if ($.inArray(user.name, currentProject.siteManagers)>=0)
+                    if ($.inArray(user.name, currentProject.siteManagers) >= 0)
                         title = title + "<br>Admin";
-                    
+
                     addMenu(getProjectMenu(myList));
                     $("#title h1").html(title);
                 });
@@ -194,21 +181,18 @@ function loadPage(projeto) {
             }
 
         });
-    } else {
-        //load user dashboard
-
+    } else { // load user dashboard
         loadUser(function(data) {
-            user.data = data;
             addMenu(getDashboardMenu());
             getUserSites(function() {
                 projectList = {};
-                for (i in user.sites) {
-                    tempName = user.sites[i].shortName;
+                $.each(user.sites, function(index, site) {
+                    tempName = site.shortName;
                     projectList[tempName] = "?projeto=" + tempName;
-                }
+                });
                 addMenu(getDashboardMenu(projectList));
             });
-            $("#title h1").text("Olá, " + user.data.firstName + " " + user.data.lastName);
+            $("#title h1").text("Olá, " + user.data.firstName + " " + user.data.lastName); // change to a function for simpler later changes
         });
 
     }
@@ -224,6 +208,8 @@ function createProjectPop() {
         }
         var pop = $("<div id='projectpop'></div>").appendTo($("body"));
         pop.addClass("popup");
+        //move html?
+
         var body = "<div id='shaper'>\n\
                         <select id='selectproject'></select>\n\
                         <div class='bottombutton'>\n\
@@ -244,26 +230,6 @@ function createProjectPop() {
     });
 }
 
-//now useless...?  >>> projects from DB
-function getProjects(callback) {
-    $.ajax(
-            {
-                type: 'GET',
-                url: '../alfresco/service/api/sites?alf_ticket=' + user.ticket,
-                dataType: 'json',
-                contentType: 'application/json; charset=utf-8',
-                cache: false,
-                success: function(data) {
-                    console.log(data);
-                    window.projects = data;
-                    callback();
-                },
-                error: function(xhr, ajaxOptions, thrownError) {
-                    console.log(xhr + " " + thrownError);
-                }
-            }
-    );
-}
 
 // create menu from object
 // string > link
@@ -273,19 +239,19 @@ function getProjects(callback) {
 function addMenu(custom, parent) {
     var drop = $("<ul></ul>");
     if (custom) {
-        for (i in custom) { // text : onclick or menu
+        $.each(custom, function(index, customI) {// text : onclick or menu
             li = $("<li></li>").appendTo(drop);
-            if (custom[i] && (typeof (custom[i]) === "function")) {
-                addButtons(i, li, custom[i]);
-            } else if (typeof (custom[i]) === "object") {
-                addButtons(i, li);
-                addMenu(custom[i], li);
-            } else if ((typeof (custom[i]) === "string") && (custom[i])) {
-                addButtons(i, li, goUrl, custom[i]);
+            if (customI && (typeof (customI) === "function")) {
+                addButtons(index, li, customI);
+            } else if (typeof (customI) === "object") {
+                addButtons(index, li);
+                addMenu(customI, li);
+            } else if ((typeof (customI) === "string") && (customI)) {
+                addButtons(index, li, goUrl, customI);
             } else {
-                addButtons(i, li);
+                addButtons(index, li);
             }
-        }
+        });
     }
 
 
@@ -324,17 +290,17 @@ function addButtons(text, parent, onclick, url) {
 
 //to do next
 function goUrl() {
-    window.location = $(this).attr("url");
+    if (window.history.pushState) {
+        window.history.pushState({}, document.title, $(this).attr("url"));
+        loadPage(getUrlParameter("projeto"));
+    } else {
+        window.location = $(this).attr("url");
+    }
 }
 
 
 
-//inicio
-//
-//ciclo > qce
-//
+
 //botoes
-//
-//timeout ticket
-//
+
 //favorito ?

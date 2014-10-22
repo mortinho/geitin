@@ -61,11 +61,40 @@ function Login() {
 //  apaga cookie e variavel
 
 function logout() {
+    ajaxLogout();
     user.ticket=null;
     eraseCookie("ticket");
 }
 
-//  pedido POST de login via ajax
+
+// repository logout DELETE call
+ 
+function ajaxLogout() {
+    $.ajax(
+       {type:'DELETE',
+            url:'../alfresco/service/api/login/ticket/'+user.ticket+"?alf_ticket="+user.ticket,
+//        dataType: 'json',
+        contentType: 'application/json; charset=utf-8',
+        cache:false,
+//        data:JSON.stringify({"username":user.name,"password":user.password}),
+        
+        success: function(data){
+            console.log("logged out of repository");
+//            user.ticket= data.data.ticket;
+//            createCookie("ticket",user.ticket);
+//            loadPage(getUrlParameter("projeto"));
+        },
+        error: function (xhr, ajaxOptions, thrownError){
+            console.log("alfresco logout error");
+            console.log(xhr+" "+thrownError);
+//            $(".login button").removeAttr("disabled");
+//            $(".login button").before($("<i id='errormsg'>usuario ou senha invalidos</i>"));
+//            $("#passwd").val("");
+        }
+       }
+   );
+}
+// alfresco login through an ajax POST
 
 function ajaxLogin() {
     $.ajax(
@@ -77,14 +106,12 @@ function ajaxLogin() {
         data:JSON.stringify({"username":user.name,"password":user.password}),
         
         success: function(data){
-            //callBack(responseData);
-            console.log(data.data.ticket);
             user.ticket= data.data.ticket;
             createCookie("ticket",user.ticket);
             loadPage(getUrlParameter("projeto"));
         },
-        error: function (xhr, ajaxOptions, thrownError){ 
-            //alert('deu ruim '+xhr.responseText());
+        error: function (xhr, ajaxOptions, thrownError){
+            console.log("alfresco login error");
             console.log(xhr+" "+thrownError);
             $(".login button").removeAttr("disabled");
             $(".login button").before($("<i id='errormsg'>usuario ou senha invalidos</i>"));
@@ -105,7 +132,7 @@ function verifyTicket(callback){
                 type:'GET',
                 url:'../alfresco/service/api/login/ticket/'+user.ticket+'?alf_ticket='+user.ticket,
                 statusCode: {
-                    200: function (response) { //ticket ainda valido
+                    200: function (response) { //ticket's valid 
                         callback();
                         console.log('ticket valido');
                     },
