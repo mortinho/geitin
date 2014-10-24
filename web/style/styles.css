@@ -26,6 +26,18 @@ and open the template in the editor.
     color: white;
 }
 
+#title #bottomtitle{
+    position: relative;
+    height: 30px;
+    right: -90%;
+    bottom: 120px;
+    width: 80px;
+}
+
+#favstar{
+    height: 100%;
+}
+
 #select{
     width:95%;
     margin-left: auto;

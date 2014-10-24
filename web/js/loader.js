@@ -140,23 +140,23 @@ function loginPop() {
 function loadPage(projeto) {
     $("#login").remove();
     $("#container").show();
-    currentProject = null;
+    user.currentProject = null;
     if (projeto) {  // then load the project page if possible
         getProjects(function() {
-            currentProject = null;
+            user.currentProject = null;
             projectList = {};
             for (i in projects) {
                 if (projects[i].shortName === projeto) {
-                    currentProject = projects[i];
+                    user.currentProject = projects[i];
                 } else {
                     tempName = projects[i].shortName;
                     projectList[tempName] = "?projeto=" + tempName;
                 }
             }
-            if (currentProject) {
+            if (user.currentProject) {
                 getManageableSites(function(data) {
                     myList = {};
-                    title = currentProject.title;
+                    title = user.currentProject.title;
                     inSite = false;
                     $.each(projectList, function(pname, project) {
                         $.each(user.sites, function(index, site) {
@@ -166,14 +166,26 @@ function loadPage(projeto) {
                                 myList[pname] = project;
                         });
                     });
-
+                    
+                    //favorite check
+                    
+                    if ($.inArray(user.currentProject.shortName, user.favorites) >= 0) {
+                        isfav = true;
+                    } else {
+                        isfav = false;
+                    }
+                    loadFav(isfav);
+                    $("#favstar").show();
+                    
                     //access level visual test                                           TBR
+                    
                     if (!inSite)
                         title = title + "<br>Guest";
-                    if ($.inArray(user.name, currentProject.siteManagers) >= 0)
+                    if ($.inArray(user.name, user.currentProject.siteManagers) >= 0)
                         title = title + "<br>Admin";
-
-                    addMenu(getProjectMenu(myList));
+                    menu = getProjectMenu(myList);
+                    menu.Documentos = "../share/page/site/"+user.currentProject.shortName+"/documentlibrary";
+                    addMenu(menu);
                     $("#title h1").html(title);
                 });
             } else {
@@ -193,6 +205,7 @@ function loadPage(projeto) {
                 addMenu(getDashboardMenu(projectList));
             });
             $("#title h1").text("Olá, " + user.data.firstName + " " + user.data.lastName); // change to a function for simpler later changes
+            $("#favstar").hide();
         });
 
     }
@@ -241,7 +254,14 @@ function addMenu(custom, parent) {
     if (custom) {
         $.each(custom, function(index, customI) {// text : onclick or menu
             li = $("<li></li>").appendTo(drop);
-            if (customI && (typeof (customI) === "function")) {
+            if (index === "Favorito") {
+                if (user.favorites) {
+                    $.each(user.favorites,function(index, favorite){
+                        addButtons(favorite, li, goUrl, "?projeto="+favorite);
+                    });
+                }
+            }
+            else if (customI && (typeof (customI) === "function")) {
                 addButtons(index, li, customI);
             } else if (typeof (customI) === "object") {
                 addButtons(index, li);
@@ -285,22 +305,48 @@ function addButtons(text, parent, onclick, url) {
 
 // change to push url + loadPage(prj)
 
+function loadFav(isFav){
+    imgFill = "images/starfill.png";
+    imgEmpty = "images/starempty.png";
+    if (isFav){
+        $("#favstar").attr("src",imgFill);
+        $("#favstar").attr("isfav","true");        
+    } else {
+        $("#favstar").attr("src",imgEmpty);
+        $("#favstar").attr("isfav","false");
+    }
+    
+    
+}
 
+function toggleFav(){
+    isfav = $("#favstar").attr("isfav");
+    if (isfav === "true" ){
+        isfav = true;
+    } else {
+        isfav = false;
+    }
+    loadFav(!isfav);
+}
 
 
 //to do next
 function goUrl() {
-    if (window.history.pushState) {
-        window.history.pushState({}, document.title, $(this).attr("url"));
+    url = $(this).attr("url");
+    if (window.history.pushState && url.slice(0,2) !== "..") {
+        window.history.pushState({}, document.title, url);
         loadPage(getUrlParameter("projeto"));
     } else {
-        window.location = $(this).attr("url");
+        window.location = url;
+        
     }
 }
-
 
 
 
 //botoes
 
 //favorito ?
+
+
+user.favorites = ["lioc"];
