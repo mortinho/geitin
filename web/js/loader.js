@@ -58,6 +58,47 @@ function getProjectMenu(projectList) {
     return projectMenu;
 }
 
+function createPop() {
+    if (!$("#pop")[0]) {
+        var helpText = '<h2>CRIAR PROJETO</h2><BR>\n\
+                    - É uma "pop-up" na página "Usuário"<BR>\n\
+                    - Escolher um site do Alfresco, o qual o usuário seja Manager, e que ainda não seja projeto no GEITIN<BR><BR>\n\
+                    <h2>SUPERVISÃO AUTOMÁTICA</h2><BR>\n\
+                    - Aparece automaticamente quando a página é carregada ou na solicitação de “Supervisão Automática”<BR>\n\
+                    - Lista somente as atualizações pendentes<BR>\n\
+                    e necessitando de novo status, deste usuário.<BR><BR>\n\
+                    <h2>SUPERVISÃO POR PROJETO</h2><BR>\n\
+                    - Lista todos os itens que possibilitam supervisão por esse usuár<BR>\n\
+                    io, no projeto escolhido. Inclusive os itens de outros usuários<BR>\n\
+                    , os quais<BR>\n\
+                    são hierarquicamente abaixo dele.<BR>\n\
+                    - Listar por usuário e em ordem alfabética<BR><BR>\n\
+                    Observações:<BR>\n\
+                    “Ciclos”- Mostra o QCE ou edita algo que pertence somente a aquele<BR>\n\
+                    Ciclo, isto é, não poderá gerar mudanças nos Ciclos seguintes<BR>';
+
+        var pop = $("<div id='pop'></div>").appendTo($("body"));
+        pop.addClass("popup");
+        var body = "<div id='shaper'>\n\
+                        <div class='bottombutton'>\n\
+                            <button id='close'>close</button>\n\
+                        </div>\n\
+                        <p>" + helpText + "</p>\n\
+                    </div>\n\
+        ";
+        $(body).appendTo(pop);
+        $("#close").on("click", function() {
+            $("#pop").remove();
+        });
+//        function loadSelect() {
+//            for (i in projects) {
+//                var shortname = projects[i].shortName;
+//                $("<option value=" + shortname + ">" + shortname + "</option>").appendTo($("#selectproject"));
+//            }
+//        }
+    }
+}
+
 
 // updates menu entries' hover function
 
@@ -166,9 +207,9 @@ function loadPage(projeto) {
                                 myList[pname] = project;
                         });
                     });
-                    
+
                     //favorite check
-                    
+
                     if ($.inArray(user.currentProject.shortName, user.favorites) >= 0) {
                         isfav = true;
                     } else {
@@ -176,15 +217,15 @@ function loadPage(projeto) {
                     }
                     loadFav(isfav);
                     $("#favstar").show();
-                    
+
                     //access level visual test                                           TBR
-                    
+
                     if (!inSite)
                         title = title + "<br>Guest";
                     if ($.inArray(user.name, user.currentProject.siteManagers) >= 0)
                         title = title + "<br>Admin";
                     menu = getProjectMenu(myList);
-                    menu.Documentos = "../share/page/site/"+user.currentProject.shortName+"/documentlibrary";
+                    menu.Documentos = "../share/page/site/" + user.currentProject.shortName + "/documentlibrary";
                     addMenu(menu);
                     $("#title h1").html(title);
                 });
@@ -211,37 +252,7 @@ function loadPage(projeto) {
     }
 }
 
-function createProjectPop() {
-    verifyTicket(function() {
-        function loadSelect() {
-            for (i in projects) {
-                var shortname = projects[i].shortName;
-                $("<option value=" + shortname + ">" + shortname + "</option>").appendTo($("#selectproject"));
-            }
-        }
-        var pop = $("<div id='projectpop'></div>").appendTo($("body"));
-        pop.addClass("popup");
-        //move html?
 
-        var body = "<div id='shaper'>\n\
-                        <select id='selectproject'></select>\n\
-                        <div class='bottombutton'>\n\
-                            <button id='close'>close</button>\n\
-                        </div>\n\
-                    </div>\n\
-        ";
-        $(body).appendTo(pop);
-        $("#close").on("click", function() {
-            $("#projectpop").remove();
-        });
-        if (typeof (projects) !== "undefined" && projects)
-        {
-            loadSelect();
-        } else {
-            getProjects(loadSelect);
-        }
-    });
-}
 
 
 // create menu from object
@@ -256,8 +267,8 @@ function addMenu(custom, parent) {
             li = $("<li></li>").appendTo(drop);
             if (index === "Favorito") {
                 if (user.favorites) {
-                    $.each(user.favorites,function(index, favorite){
-                        addButtons(favorite, li, goUrl, "?projeto="+favorite);
+                    $.each(user.favorites, function(index, favorite) {
+                        addButtons(favorite, li, goUrl, "?projeto=" + favorite);
                     });
                 }
             }
@@ -305,27 +316,43 @@ function addButtons(text, parent, onclick, url) {
 
 // change to push url + loadPage(prj)
 
-function loadFav(isFav){
+function loadFav(isFav) {
     imgFill = "images/starfill.png";
     imgEmpty = "images/starempty.png";
-    if (isFav){
-        $("#favstar").attr("src",imgFill);
-        $("#favstar").attr("isfav","true");        
+    if (isFav) {
+        $("#favstar").attr("src", imgFill);
+        $("#favstar").attr("isfav", "true");
     } else {
-        $("#favstar").attr("src",imgEmpty);
-        $("#favstar").attr("isfav","false");
+        $("#favstar").attr("src", imgEmpty);
+        $("#favstar").attr("isfav", "false");
     }
-    
-    
+
+
 }
 
-function toggleFav(){
+function toggleFav() {
     isfav = $("#favstar").attr("isfav");
-    if (isfav === "true" ){
+    siteName = user.currentProject.shortName;
+    index = $.inArray(siteName,user.favorites);
+    if (index < 0){
+        user.favorites.push(siteName);
+    } else {
+        user.favorites.splice(index,1);
+    }
+    if (isfav === "true") {
+        
         isfav = true;
     } else {
         isfav = false;
     }
+    getUserSites(function() {
+                projectList = {};
+                $.each(user.sites, function(index, site) {
+                    tempName = site.shortName;
+                    projectList[tempName] = "?projeto=" + tempName;
+                });
+                addMenu(getProjectMenu(projectList));
+            });
     loadFav(!isfav);
 }
 
@@ -333,12 +360,12 @@ function toggleFav(){
 //to do next
 function goUrl() {
     url = $(this).attr("url");
-    if (window.history.pushState && url.slice(0,2) !== "..") {
+    if (window.history.pushState && url.slice(0, 2) !== "..") {
         window.history.pushState({}, document.title, url);
         loadPage(getUrlParameter("projeto"));
     } else {
         window.location = url;
-        
+
     }
 }
 
@@ -349,4 +376,4 @@ function goUrl() {
 //favorito ?
 
 
-user.favorites = ["lioc"];
+user.favorites = [];

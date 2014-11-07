@@ -34,7 +34,7 @@ and open the template in the editor.
     width: 80px;
 }
 
-#favstar{
+#bottomtitle img{
     height: 100%;
 }
 
@@ -201,7 +201,7 @@ ul.dropdown ul ul
 }
 
 #close{
-    position: absolute;
+    position: relative;
     bottom: 0%;
-    left: 70%;
+    left: 95%;
 }

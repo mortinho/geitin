@@ -21,9 +21,9 @@
         <link rel="stylesheet" type="text/css" href="style/styles.css"/>
         <script>
             $("document").ready(function() {
-                user.favorites = ["swsdp","lioc"];
+//                user.favorites = ["swsdp", "lioc"];
                 //$("#favstar").hide();
-                window.onpopstate = function (e){
+                window.onpopstate = function(e) {
                     loadPage(getUrlParameter("projeto"));
                 }
                 user.ticket = readCookie("ticket");
@@ -40,7 +40,13 @@
     </head>
     <body>
         <div id="container">
-            <div id="title"><p><h1></h1></p><div id="bottomtitle"><img id="favstar" src="images/starempty.png" isfav="false" onclick="javascript:toggleFav();"><img id="helpbutton"></div></div>
+            <div id="title">
+                <p><h1></h1></p>
+                <div id="bottomtitle">
+                    <img id="favstar" src="images/starempty.png" isfav="false" onclick="javascript:toggleFav();">
+                    <img id="helpbutton" src="images/help.png" onclick="javascript:createPop();">
+                </div>
+            </div>
             <div id="select">
                 <p></p>
             </div>
