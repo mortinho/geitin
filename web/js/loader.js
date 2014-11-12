@@ -16,7 +16,7 @@ function getDashboardMenu(projectList) {
             "Favorito": "",
             "Mais...": projectList
         },
-        "Sair": "javascript:logout();loginPop();"
+        "Sair": function (){logout();loginPop();}
     };
     return dashboardMenu;
 }
@@ -53,7 +53,7 @@ function getProjectMenu(projectList) {
             "Favorito": "",
             "Mais...": projectList
         },
-        "Sair": "javascript:logout();loginPop();"
+        "Sair": function (){logout();loginPop();}
     };
     return projectMenu;
 }
@@ -81,7 +81,7 @@ function createPop() {
         pop.addClass("popup");
         var body = "<div id='shaper'>\n\
                         <div class='bottombutton'>\n\
-                            <button id='close'>close</button>\n\
+                            <button id='close'>Fechar</button>\n\
                         </div>\n\
                         <p>" + helpText + "</p>\n\
                     </div>\n\
